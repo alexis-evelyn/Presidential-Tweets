@@ -1,6 +1,6 @@
 # Presidential Tweets
 
-Will be used for automated retrieval of presidential tweets until Dolthub provides its own means to run CI. Check out this [dolt repo][repo] for more info.
+Will be used for automated retrieval of presidential tweets until Dolthub provides its own means to run CI. Check out this [dolt repo][repo] for more info. I linked the dolt repo as described by [this ReadMe][dolt-link].
 
 ## Trump
 ```sql
@@ -78,3 +78,4 @@ CREATE TABLE `biden` (
 ```
 
 [repo]: https://www.dolthub.com/repositories/alexis-evelyn/presidential-tweets
+[dolt-link]: https://github.com/dolthub/dolt/blob/master/go/cmd/git-dolt/README.md
