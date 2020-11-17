@@ -11,7 +11,7 @@ logger = get_logger(__name__)
 
 def main():
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
-    repoPath = '.'
+    repoPath = 'tests'
     table = 'test'
     url = 'dolthub/great-players-example'
     message = 'Test Commit'
@@ -35,7 +35,7 @@ def main():
 
 def retrieveData() -> dict:
     # Read JSON From File
-    with open('regular-test.json') as f:
+    with open('tests/regular-test.json') as f:
       data = json.load(f)
     
     # Print JSON For Debugging
