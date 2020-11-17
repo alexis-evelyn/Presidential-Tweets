@@ -2,6 +2,8 @@
 
 Will be used for automated retrieval of presidential tweets until Dolthub provides its own means to run CI. Check out this [dolt repo][repo] for more info. I linked the dolt repo as described by [this ReadMe][dolt-link].
 
+To update the pointer file, run the bash script [./updatePointer.sh][update-pointer]. You need dolt and git installed as well as having already fetched the lastest commit by running `git dolt fetch presidential-tweets.git-dolt` and then pulling the latest commit via `dolt pull` inside the `presidential-tweets` folder.
+
 ## Trump
 ```sql
 CREATE TABLE `trump` (
@@ -79,3 +81,4 @@ CREATE TABLE `biden` (
 
 [repo]: https://www.dolthub.com/repositories/alexis-evelyn/presidential-tweets
 [dolt-link]: https://github.com/dolthub/dolt/blob/master/go/cmd/git-dolt/README.md
+[update-pointer]: updatePointer.sh
