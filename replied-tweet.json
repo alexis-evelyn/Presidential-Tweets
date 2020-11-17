@@ -1,0 +1,196 @@
+{
+    "data": {
+        "in_reply_to_user_id": "1330457336",
+        "lang": "en",
+        "author_id": "1536791610",
+        "created_at": "2015-05-18T21:07:29.000Z",
+        "id": "600407380279566336",
+        "text": "Good question, @billclinton. The handle comes with the house. Know anyone interested in @FLOTUS?",
+        "referenced_tweets": [
+            {
+                "type": "replied_to",
+                "id": "600389785769881600"
+            }
+        ],
+        "entities": {
+            "mentions": [
+                {
+                    "start": 15,
+                    "end": 27,
+                    "username": "BillClinton"
+                },
+                {
+                    "start": 88,
+                    "end": 95,
+                    "username": "FLOTUS"
+                }
+            ]
+        },
+        "source": "Twitter for iPhone",
+        "public_metrics": {
+            "retweet_count": 50107,
+            "reply_count": 5680,
+            "like_count": 94284,
+            "quote_count": 149
+        },
+        "possibly_sensitive": false,
+        "conversation_id": "600389785769881600"
+    },
+    "includes": {
+        "users": [
+            {
+                "name": "President Obama",
+                "description": "This is an archive of an Obama Administration account maintained by the National Archives and Records Administration (NARA).",
+                "public_metrics": {
+                    "followers_count": 14653303,
+                    "following_count": 79,
+                    "tweet_count": 352,
+                    "listed_count": 23309
+                },
+                "id": "1536791610",
+                "username": "POTUS44",
+                "verified": true,
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/OTH6ss7aE4",
+                                "expanded_url": "https://www.obamalibrary.gov/research/archived-white-house-websites-and-social-media#socialmedia",
+                                "display_url": "obamalibrary.gov/research/archi…"
+                            }
+                        ]
+                    }
+                },
+                "created_at": "2013-06-21T16:02:21.000Z",
+                "protected": false,
+                "url": "https://t.co/OTH6ss7aE4",
+                "location": "Washington, D.C.",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/600314410003865600/laIuu4bB_normal.jpg"
+            },
+            {
+                "name": "Bill Clinton",
+                "description": "Father, grandfather, 42nd President of the United States, Founder, Clinton Foundation. Follow @ClintonFdn for more on our work around the world.",
+                "public_metrics": {
+                    "followers_count": 12720469,
+                    "following_count": 35,
+                    "tweet_count": 1059,
+                    "listed_count": 22546
+                },
+                "id": "1330457336",
+                "username": "BillClinton",
+                "verified": true,
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/k1nZeBK21W",
+                                "expanded_url": "http://www.clintonfoundation.org",
+                                "display_url": "clintonfoundation.org"
+                            }
+                        ]
+                    },
+                    "description": {
+                        "mentions": [
+                            {
+                                "start": 94,
+                                "end": 105,
+                                "username": "ClintonFdn"
+                            }
+                        ]
+                    }
+                },
+                "created_at": "2013-04-06T01:47:40.000Z",
+                "protected": false,
+                "url": "https://t.co/k1nZeBK21W",
+                "location": "New York, NY",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/1239440892664086529/iY0Z83Dr_normal.jpg"
+            },
+            {
+                "name": "Melania Trump",
+                "description": "This account is run by the Office of First Lady Melania Trump. Tweets may be archived. More at https://t.co/eVVzoBb3Zr",
+                "public_metrics": {
+                    "followers_count": 16050039,
+                    "following_count": 8,
+                    "tweet_count": 1297,
+                    "listed_count": 11462
+                },
+                "id": "818876014390603776",
+                "username": "FLOTUS",
+                "verified": true,
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/9zG6ZvKVLm",
+                                "expanded_url": "http://www.BeBest.gov",
+                                "display_url": "BeBest.gov"
+                            }
+                        ]
+                    },
+                    "description": {
+                        "urls": [
+                            {
+                                "start": 95,
+                                "end": 118,
+                                "url": "https://t.co/eVVzoBb3Zr",
+                                "expanded_url": "http://wh.gov/privacy",
+                                "display_url": "wh.gov/privacy"
+                            }
+                        ]
+                    }
+                },
+                "created_at": "2017-01-10T17:43:50.000Z",
+                "pinned_tweet_id": "1255134676508741640",
+                "protected": false,
+                "url": "https://t.co/9zG6ZvKVLm",
+                "location": "Washington, D.C.",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/848946510918295557/RmsOl1zv_normal.jpg"
+            }
+        ],
+        "tweets": [
+            {
+                "lang": "en",
+                "author_id": "1330457336",
+                "created_at": "2015-05-18T19:57:34.000Z",
+                "id": "600389785769881600",
+                "text": "Welcome to @Twitter, @POTUS! One question: Does that username stay with the office? #askingforafriend",
+                "entities": {
+                    "hashtags": [
+                        {
+                            "start": 84,
+                            "end": 101,
+                            "tag": "askingforafriend"
+                        }
+                    ],
+                    "mentions": [
+                        {
+                            "start": 11,
+                            "end": 19,
+                            "username": "Twitter"
+                        },
+                        {
+                            "start": 21,
+                            "end": 27,
+                            "username": "POTUS"
+                        }
+                    ]
+                },
+                "source": "Twitter Web Client",
+                "public_metrics": {
+                    "retweet_count": 75072,
+                    "reply_count": 3059,
+                    "like_count": 106260,
+                    "quote_count": 119
+                },
+                "possibly_sensitive": false,
+                "conversation_id": "600389785769881600"
+            }
+        ]
+    }
+}

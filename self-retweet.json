@@ -1,0 +1,113 @@
+{
+    "data": {
+        "referenced_tweets": [
+            {
+                "type": "retweeted",
+                "id": "1328055196904251397"
+            }
+        ],
+        "public_metrics": {
+            "retweet_count": 60276,
+            "reply_count": 0,
+            "like_count": 0,
+            "quote_count": 0
+        },
+        "entities": {
+            "mentions": [
+                {
+                    "start": 3,
+                    "end": 19,
+                    "username": "realDonaldTrump"
+                }
+            ],
+            "annotations": [
+                {
+                    "start": 21,
+                    "end": 31,
+                    "probability": 0.9955,
+                    "type": "Person",
+                    "normalized_text": "John Bolton"
+                }
+            ]
+        },
+        "source": "Twitter for iPhone",
+        "possibly_sensitive": false,
+        "lang": "en",
+        "author_id": "25073877",
+        "created_at": "2020-11-16T13:48:21.000Z",
+        "text": "RT @realDonaldTrump: John Bolton was one of the dumbest people in government that I’ve had the “pleasure” to work with. A sullen, dull and…",
+        "id": "1328334093008965632",
+        "conversation_id": "1328334093008965632"
+    },
+    "includes": {
+        "users": [
+            {
+                "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+                "protected": false,
+                "location": "Washington, DC",
+                "id": "25073877",
+                "url": "https://t.co/8f9VFxztEJ",
+                "name": "Donald J. Trump",
+                "verified": true,
+                "public_metrics": {
+                    "followers_count": 88954384,
+                    "following_count": 51,
+                    "tweet_count": 58486,
+                    "listed_count": 124940
+                },
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/8f9VFxztEJ",
+                                "expanded_url": "http://Vote.DonaldJTrump.com",
+                                "display_url": "Vote.DonaldJTrump.com"
+                            }
+                        ]
+                    }
+                },
+                "created_at": "2009-03-18T13:46:38.000Z",
+                "description": "45th President of the United States of America🇺🇸",
+                "username": "realDonaldTrump"
+            }
+        ],
+        "tweets": [
+            {
+                "public_metrics": {
+                    "retweet_count": 60276,
+                    "reply_count": 59375,
+                    "like_count": 344758,
+                    "quote_count": 16987
+                },
+                "source": "Twitter for iPhone",
+                "possibly_sensitive": false,
+                "lang": "en",
+                "author_id": "25073877",
+                "entities": {
+                    "annotations": [
+                        {
+                            "start": 0,
+                            "end": 10,
+                            "probability": 0.9944,
+                            "type": "Person",
+                            "normalized_text": "John Bolton"
+                        },
+                        {
+                            "start": 149,
+                            "end": 165,
+                            "probability": 0.5098,
+                            "type": "Organization",
+                            "normalized_text": "National Security"
+                        }
+                    ]
+                },
+                "created_at": "2020-11-15T19:20:07.000Z",
+                "text": "John Bolton was one of the dumbest people in government that I’ve had the “pleasure” to work with. A sullen, dull and quiet guy, he added nothing to National Security except, “Gee, let’s go to war.” Also, illegally released much Classified Information. A real dope!",
+                "id": "1328055196904251397",
+                "conversation_id": "1328055196904251397"
+            }
+        ]
+    }
+}

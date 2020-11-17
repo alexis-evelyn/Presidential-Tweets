@@ -1,0 +1,102 @@
+{
+    "data": {
+        "source": "Twitter for iPhone",
+        "text": "Georgia won’t let us look at the all important signature match. Without that the recount is MEANINGLESS. Open up unconstitutional Consent Decree, NOW! @BrianKempGA",
+        "entities": {
+            "mentions": [
+                {
+                    "start": 151,
+                    "end": 163,
+                    "username": "BrianKempGA"
+                }
+            ],
+            "annotations": [
+                {
+                    "start": 0,
+                    "end": 6,
+                    "probability": 0.8073,
+                    "type": "Place",
+                    "normalized_text": "Georgia"
+                }
+            ]
+        },
+        "public_metrics": {
+            "retweet_count": 48000,
+            "reply_count": 37810,
+            "like_count": 208769,
+            "quote_count": 6271
+        },
+        "possibly_sensitive": false,
+        "created_at": "2020-11-16T16:59:52.000Z",
+        "lang": "en",
+        "id": "1328382287331856384",
+        "author_id": "25073877",
+        "conversation_id": "1328382287331856384"
+    },
+    "includes": {
+        "users": [
+            {
+                "public_metrics": {
+                    "followers_count": 88959690,
+                    "following_count": 51,
+                    "tweet_count": 58485,
+                    "listed_count": 124925
+                },
+                "verified": true,
+                "name": "Donald J. Trump",
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/8f9VFxztEJ",
+                                "expanded_url": "http://Vote.DonaldJTrump.com",
+                                "display_url": "Vote.DonaldJTrump.com"
+                            }
+                        ]
+                    }
+                },
+                "url": "https://t.co/8f9VFxztEJ",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+                "username": "realDonaldTrump",
+                "protected": false,
+                "description": "45th President of the United States of America🇺🇸",
+                "created_at": "2009-03-18T13:46:38.000Z",
+                "location": "Washington, DC",
+                "id": "25073877"
+            },
+            {
+                "public_metrics": {
+                    "followers_count": 111192,
+                    "following_count": 2011,
+                    "tweet_count": 7938,
+                    "listed_count": 713
+                },
+                "verified": true,
+                "name": "Brian Kemp",
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/8M3bLfXOs2",
+                                "expanded_url": "http://www.kempforgovernor.com",
+                                "display_url": "kempforgovernor.com"
+                            }
+                        ]
+                    }
+                },
+                "url": "https://t.co/8M3bLfXOs2",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/849618212501299200/6vxWcbtW_normal.jpg",
+                "username": "BrianKempGA",
+                "protected": false,
+                "description": "Georgia's 83rd Governor",
+                "created_at": "2009-06-15T20:36:14.000Z",
+                "location": "Athens, GA",
+                "id": "47437206"
+            }
+        ]
+    }
+}

@@ -1,0 +1,193 @@
+{
+    "data": {
+        "entities": {
+            "annotations": [
+                {
+                    "start": 20,
+                    "end": 24,
+                    "probability": 0.9911,
+                    "type": "Person",
+                    "normalized_text": "Trump"
+                },
+                {
+                    "start": 62,
+                    "end": 74,
+                    "probability": 0.8269,
+                    "type": "Place",
+                    "normalized_text": "Freedom Plaza"
+                }
+            ],
+            "urls": [
+                {
+                    "start": 76,
+                    "end": 99,
+                    "url": "https://t.co/DRCI7uswrb",
+                    "expanded_url": "https://twitter.com/realDerekUtley/status/1327686330600579073/video/1",
+                    "display_url": "pic.twitter.com/DRCI7uswrb"
+                }
+            ],
+            "mentions": [
+                {
+                    "start": 3,
+                    "end": 18,
+                    "username": "realDerekUtley"
+                }
+            ]
+        },
+        "lang": "en",
+        "source": "Twitter for iPhone",
+        "attachments": {
+            "media_keys": [
+                "7_1327685330540093440"
+            ]
+        },
+        "conversation_id": "1328329896888848385",
+        "possibly_sensitive": false,
+        "id": "1328329896888848385",
+        "referenced_tweets": [
+            {
+                "type": "retweeted",
+                "id": "1327686330600579073"
+            }
+        ],
+        "created_at": "2020-11-16T13:31:41.000Z",
+        "public_metrics": {
+            "retweet_count": 9933,
+            "reply_count": 0,
+            "like_count": 0,
+            "quote_count": 0
+        },
+        "author_id": "25073877",
+        "text": "RT @realDerekUtley: Trump Supporters as far as you can see at Freedom Plaza https://t.co/DRCI7uswrb"
+    },
+    "includes": {
+        "media": [
+            {
+                "width": 720,
+                "public_metrics": {
+                    "view_count": 1136186
+                },
+                "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1327685330540093440/pu/img/oDtcvXa0gFpq6n0Y.jpg",
+                "height": 1280,
+                "type": "video",
+                "media_key": "7_1327685330540093440",
+                "duration_ms": 8337
+            }
+        ],
+        "users": [
+            {
+                "protected": false,
+                "created_at": "2009-03-18T13:46:38.000Z",
+                "username": "realDonaldTrump",
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/8f9VFxztEJ",
+                                "expanded_url": "http://Vote.DonaldJTrump.com",
+                                "display_url": "Vote.DonaldJTrump.com"
+                            }
+                        ]
+                    }
+                },
+                "public_metrics": {
+                    "followers_count": 88955392,
+                    "following_count": 51,
+                    "tweet_count": 58486,
+                    "listed_count": 124929
+                },
+                "name": "Donald J. Trump",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+                "location": "Washington, DC",
+                "description": "45th President of the United States of America🇺🇸",
+                "verified": true,
+                "url": "https://t.co/8f9VFxztEJ",
+                "id": "25073877"
+            },
+            {
+                "protected": false,
+                "created_at": "2018-07-31T07:14:51.000Z",
+                "username": "realDerekUtley",
+                "entities": {
+                    "url": {
+                        "urls": [
+                            {
+                                "start": 0,
+                                "end": 23,
+                                "url": "https://t.co/PtbPz2yJnI",
+                                "expanded_url": "http://www.xstrats.com",
+                                "display_url": "xstrats.com"
+                            }
+                        ]
+                    }
+                },
+                "public_metrics": {
+                    "followers_count": 45054,
+                    "following_count": 936,
+                    "tweet_count": 2018,
+                    "listed_count": 112
+                },
+                "name": "Derek Utley",
+                "profile_image_url": "https://pbs.twimg.com/profile_images/1317632357378248704/VKcqn1Ss_normal.jpg",
+                "location": "Palm Beach, FL",
+                "pinned_tweet_id": "1312552876842119168",
+                "description": "Chairman of X Strategies LLC. Advisor to political candidates, politicians, personalities and other organizations. Member of Trump Victory Finance Committee.",
+                "verified": false,
+                "url": "https://t.co/PtbPz2yJnI",
+                "id": "1024191646634786818"
+            }
+        ],
+        "tweets": [
+            {
+                "entities": {
+                    "annotations": [
+                        {
+                            "start": 0,
+                            "end": 4,
+                            "probability": 0.9864,
+                            "type": "Person",
+                            "normalized_text": "Trump"
+                        },
+                        {
+                            "start": 42,
+                            "end": 54,
+                            "probability": 0.829,
+                            "type": "Place",
+                            "normalized_text": "Freedom Plaza"
+                        }
+                    ],
+                    "urls": [
+                        {
+                            "start": 56,
+                            "end": 79,
+                            "url": "https://t.co/DRCI7uswrb",
+                            "expanded_url": "https://twitter.com/realDerekUtley/status/1327686330600579073/video/1",
+                            "display_url": "pic.twitter.com/DRCI7uswrb"
+                        }
+                    ]
+                },
+                "lang": "en",
+                "source": "Twitter for iPhone",
+                "attachments": {
+                    "media_keys": [
+                        "7_1327685330540093440"
+                    ]
+                },
+                "conversation_id": "1327686330600579073",
+                "possibly_sensitive": false,
+                "id": "1327686330600579073",
+                "created_at": "2020-11-14T18:54:23.000Z",
+                "public_metrics": {
+                    "retweet_count": 9933,
+                    "reply_count": 3817,
+                    "like_count": 42021,
+                    "quote_count": 822
+                },
+                "author_id": "1024191646634786818",
+                "text": "Trump Supporters as far as you can see at Freedom Plaza https://t.co/DRCI7uswrb"
+            }
+        ]
+    }
+}
