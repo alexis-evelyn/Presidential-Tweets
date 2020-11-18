@@ -31,7 +31,7 @@ def main():
     # pushData(url, branch)
     
     # Dolthub Employees - Uncomment to See Debug JSON Output
-    print(json.dumps(tweet, indent = 4))
+    # print(json.dumps(tweet, indent = 4))
 
 def retrieveData() -> dict:
     # Read JSON From File
