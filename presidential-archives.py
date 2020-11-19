@@ -4,6 +4,7 @@ import argparse
 import pandas as pd
 import json
 import logging
+import csv
 
 from doltpy.core import Dolt, system_helpers
 from doltpy.etl import get_df_table_writer
@@ -37,9 +38,9 @@ def main(arguments: argparse.Namespace):
     logger.log(VERBOSE, str(arguments))
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
-    repoPath = 'tests'
-    table = 'test'
-    url = 'alexis-evelyn/test'  # 'alexis-evelyn/presidential-tweets'
+    repoPath = 'presidential-tweets'  # tests
+    table = 'obama'
+    url = 'alexis-evelyn/presidential-tweets'  # 'alexis-evelyn/test'
     message = 'Automated Tweet Update'
 
     # Defaults
@@ -56,7 +57,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # Download Tweets From File and Archive
-    downloadTweetsFromFile(repo=repo, table=table, api=tAPI)
+    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/obama-ids.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
@@ -67,13 +68,25 @@ def main(arguments: argparse.Namespace):
         pushData(repo=repo, branch=branch)
 
 
-def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader):
-    tweet = api.get_tweet(tweet_id="1183124665688055809")
-    # print(json.dumps(tweet, indent=4))
-    # print(tweet['data']['text'])
+def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: str):
+    with open(path, "r") as file:
+        csv_reader = csv.reader(file, delimiter=',')
+        line_count = -1
+        for row in csv_reader:
+            if line_count == -1:
+                logger.log(VERBOSE, f'Column names are {", ".join(row)}')
+                line_count += 1
+            else:
+                logger.log(VERBOSE, f'\t{row[0]}')
+                line_count += 1
 
-    # Add Tweet To Database
-    addTweetToDatabase(repo=repo, table=table, data=tweet)
+                tweet = api.get_tweet(tweet_id=row[0])
+                addTweetToDatabase(repo=repo, table=table, data=tweet)
+
+                # print(json.dumps(tweet, indent=4))
+                # print(tweet['data']['text'])
+
+        logger.log(VERBOSE, f'Processed {line_count} lines.')
 
 
 def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> Dolt:

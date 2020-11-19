@@ -7,7 +7,7 @@
   </component>
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.8" />
+      <configuration sdkName="" />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">

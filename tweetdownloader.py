@@ -6,6 +6,7 @@
 import requests
 import json
 
+
 class BearerAuth(requests.auth.AuthBase):
     def __init__(self, token: str):
         self.token = token
