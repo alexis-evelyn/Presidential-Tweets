@@ -57,6 +57,10 @@ def main(arguments: argparse.Namespace):
         pushData(repo=repo, branch=branch)
 
 
+def downloadTweetsFromFile():
+    None
+
+
 def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> Dolt:
     repo = initRepo(path=repoPath, create=createRepo, url=url)
     createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
