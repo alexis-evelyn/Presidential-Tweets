@@ -1,20 +1,27 @@
 #!/usr/bin/python
 
-from doltpy.core import Dolt
-from doltpy.etl import get_df_table_writer
-from doltpy.core.system_helpers import get_logger
-# from doltpy.core.write import bulk_import
-
 import sys
 import pandas as pd
 import json
+import logging
+
+from doltpy.core import Dolt, system_helpers
+from doltpy.etl import get_df_table_writer
+from doltpy.core.system_helpers import get_logger
 
 # Dolt Logger
 logger = get_logger(__name__)
+log_level = logging.WARN  # Set to Info To Set Useful Info, Set to Debug To See Everything
 
 
 def main(args: list):
-    print(str(args))
+    # Set Logging Level
+    logging.Logger.setLevel(system_helpers.logger, log_level)  # DoltPy's Log Level
+    logger.setLevel(log_level)  # This Script's Log Level
+
+    # Print Command Line Arguments
+    logger.debug("Command Line Arguments: ")
+    logger.debug(str(args))
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'tests'
@@ -37,7 +44,7 @@ def main(args: list):
     # pushData(repo, url, branch)
 
     # Dolthub Employees - Uncomment to See Debug JSON Output
-    # print(json.dumps(tweet, indent = 4))
+    logger.debug(json.dumps(tweet, indent=4))
 
     # Debug DataFrame
     # debugDataFrame(df)
@@ -49,8 +56,8 @@ def debugDataFrame(dataFrame: pd.DataFrame):
     pd.set_option('max_columns', None)
 
     # Print DataFrame Info
-    print("DataFrame: ")
-    print(dataFrame.head())
+    logger.debug("DataFrame: ")
+    logger.debug(dataFrame.head())
 
 
 def retrieveData() -> dict:
@@ -59,7 +66,7 @@ def retrieveData() -> dict:
         data = json.load(f)
 
     # Print JSON For Debugging
-    # print(data)
+    logger.debug(data)
 
     return data
 
@@ -93,8 +100,8 @@ def extractTweet(data: dict) -> dict:
         retweetedUserId = metadata['tweets'][iteration]['author_id']
         retweetedTweetDate = metadata['tweets'][iteration]['created_at']
 
-    # print("User ID: " + "Not Set" if retweetedUserId is None else retweetedUserId)
-    # print("Tweet Date: " + "Not Set" if retweetedTweetDate is None else retweetedTweetDate)
+    logger.debug("User ID: " + "Not Set" if retweetedUserId is None else retweetedUserId)
+    logger.debug("Tweet Date: " + "Not Set" if retweetedTweetDate is None else retweetedTweetDate)
 
     # Not Handled Columns
     repliedToTweetId = None

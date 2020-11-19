@@ -2,7 +2,7 @@
 
 Will be used for automated retrieval of presidential tweets until Dolthub provides its own means to run CI. Check out this [dolt repo][repo] for more info. I linked the dolt repo as described by [this ReadMe][dolt-link].
 
-To update the pointer file, run the bash script [./updatePointer.sh][update-pointer]. You need dolt and git installed as well as having already fetched the lastest commit by running `git dolt fetch presidential-tweets.git-dolt` and then pulling the latest commit via `dolt pull` inside the `presidential-tweets` folder.
+To update the pointer file, run the bash script [./updatePointer.sh][update-pointer]. You need Dolt and git installed as well as having already fetched the latest commit by running `git dolt fetch presidential-tweets.git-dolt` and then pulling the latest commit via `dolt pull` inside the `presidential-tweets` folder.
 
 On OSX, you may need to install the Python3 requirements yourself instead of letting your IDE do it. The command for that is `ARCHFLAGS="-arch x86_64" pip3 install -r ../requirements.txt`.
 
