@@ -1,0 +1,158 @@
+{
+  "data": {
+    "public_metrics": {
+      "retweet_count": 7892,
+      "reply_count": 0,
+      "like_count": 0,
+      "quote_count": 0
+    },
+    "entities": {
+      "mentions": [
+        {
+          "start": 3,
+          "end": 19,
+          "username": "realDonaldTrump"
+        }
+      ],
+      "urls": [
+        {
+          "start": 21,
+          "end": 44,
+          "url": "https://t.co/YBmYOsGdK3",
+          "expanded_url": "https://twitter.com/realDonaldTrump/status/1183023558655709184",
+          "display_url": "twitter.com/realDonaldTrum…"
+        },
+        {
+          "start": 45,
+          "end": 68,
+          "url": "https://t.co/LWCWvpeIqn",
+          "expanded_url": "https://twitter.com/realDonaldTrump/status/1183098478232256512/photo/1",
+          "display_url": "pic.twitter.com/LWCWvpeIqn"
+        }
+      ]
+    },
+    "possibly_sensitive": false,
+    "created_at": "2019-10-12T20:57:56.000Z",
+    "author_id": "25073877",
+    "source": "Twitter for iPhone",
+    "text": "RT @realDonaldTrump: https://t.co/YBmYOsGdK3 https://t.co/LWCWvpeIqn",
+    "lang": "und",
+    "id": "1183124665688055809",
+    "attachments": {
+      "media_keys": [
+        "3_1183098473576632320"
+      ]
+    },
+    "conversation_id": "1183124665688055809",
+    "referenced_tweets": [
+      {
+        "type": "quoted",
+        "id": "1183023558655709184"
+      },
+      {
+        "type": "retweeted",
+        "id": "1183098478232256512"
+      }
+    ]
+  },
+  "includes": {
+    "media": [
+      {
+        "type": "photo",
+        "media_key": "3_1183098473576632320",
+        "height": 943,
+        "width": 2048
+      }
+    ],
+    "users": [
+      {
+        "name": "Donald J. Trump",
+        "verified": true,
+        "username": "realDonaldTrump",
+        "location": "Washington, DC",
+        "description": "45th President of the United States of America🇺🇸",
+        "created_at": "2009-03-18T13:46:38.000Z",
+        "url": "https://t.co/8f9VFxztEJ",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+        "protected": false,
+        "public_metrics": {
+          "followers_count": 88940610,
+          "following_count": 51,
+          "tweet_count": 58533,
+          "listed_count": 125067
+        },
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8f9VFxztEJ",
+                "expanded_url": "http://Vote.DonaldJTrump.com",
+                "display_url": "Vote.DonaldJTrump.com"
+              }
+            ]
+          }
+        },
+        "id": "25073877"
+      }
+    ],
+    "tweets": [
+      {
+        "public_metrics": {
+          "retweet_count": 7892,
+          "reply_count": 3853,
+          "like_count": 31572,
+          "quote_count": 258
+        },
+        "entities": {
+          "urls": [
+            {
+              "start": 0,
+              "end": 23,
+              "url": "https://t.co/YBmYOsGdK3",
+              "expanded_url": "https://twitter.com/realDonaldTrump/status/1183023558655709184",
+              "display_url": "twitter.com/realDonaldTrum…"
+            },
+            {
+              "start": 24,
+              "end": 47,
+              "url": "https://t.co/LWCWvpeIqn",
+              "expanded_url": "https://twitter.com/realDonaldTrump/status/1183098478232256512/photo/1",
+              "display_url": "pic.twitter.com/LWCWvpeIqn"
+            }
+          ]
+        },
+        "possibly_sensitive": false,
+        "created_at": "2019-10-12T19:13:52.000Z",
+        "author_id": "25073877",
+        "source": "Twitter for iPhone",
+        "text": "https://t.co/YBmYOsGdK3 https://t.co/LWCWvpeIqn",
+        "lang": "und",
+        "id": "1183098478232256512",
+        "attachments": {
+          "media_keys": [
+            "3_1183098473576632320"
+          ]
+        },
+        "conversation_id": "1183098478232256512",
+        "referenced_tweets": [
+          {
+            "type": "quoted",
+            "id": "1183023558655709184"
+          }
+        ]
+      }
+    ]
+  },
+  "errors": [
+    {
+      "detail": "Could not find tweet with referenced_tweets.id: [1183023558655709184].",
+      "title": "Not Found Error",
+      "resource_type": "tweet",
+      "parameter": "referenced_tweets.id",
+      "value": "1183023558655709184",
+      "type": "https://api.twitter.com/2/problems/resource-not-found"
+    }
+  ]
+}

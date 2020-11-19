@@ -9,6 +9,8 @@ from doltpy.core import Dolt, system_helpers
 from doltpy.etl import get_df_table_writer
 from doltpy.core.system_helpers import get_logger
 
+from tweetdownloader import TweetDownloader, BearerAuth
+
 # Custom Log Levels
 VERBOSE = logging.DEBUG - 1
 logging.addLevelName(VERBOSE, "VERBOSE")
@@ -43,11 +45,19 @@ def main(arguments: argparse.Namespace):
     # Defaults
     branch = 'master'
 
+    # Setup For Twitter API
+    with open("credentials.json", "r") as file:
+        credentials = json.load(file)
+
+    token = BearerAuth(token=credentials['BEARER_TOKEN'])
+    tAPI = TweetDownloader(auth=token)
+
     # Setup Repo
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
-    # TODO: Move Me To Loop Function For Looping Through Tweets - Add Tweet To Database
-    addTweetToDatabase(repo=repo, table=table)
+    # Download Tweets From File and Archive
+    downloadTweetsFromFile(repo=repo, table=table, api=tAPI)
+    # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
     madeCommit = commitData(repo=repo, table=table, message=message)
@@ -57,8 +67,13 @@ def main(arguments: argparse.Namespace):
         pushData(repo=repo, branch=branch)
 
 
-def downloadTweetsFromFile():
-    None
+def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader):
+    tweet = api.get_tweet(tweet_id="1183124665688055809")
+    # print(json.dumps(tweet, indent=4))
+    # print(tweet['data']['text'])
+
+    # Add Tweet To Database
+    addTweetToDatabase(repo=repo, table=table, data=tweet)
 
 
 def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> Dolt:
@@ -67,8 +82,7 @@ def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> D
     return repo
 
 
-def addTweetToDatabase(repo: Dolt, table: str):
-    data = retrieveData()
+def addTweetToDatabase(repo: Dolt, table: str, data: dict):
     tweet = extractTweet(data)
     df = getDataFrame(tweet)
 
@@ -91,9 +105,9 @@ def debugDataFrame(dataFrame: pd.DataFrame):
     logger.log(VERBOSE, dataFrame.head())
 
 
-def retrieveData() -> dict:
+def retrieveData(path: str) -> dict:
     # Read JSON From File
-    with open('tests/embedded-link.json') as f:
+    with open(path) as f:
         data = json.load(f)
 
     # Print JSON For Debugging
@@ -139,7 +153,6 @@ def extractTweet(data: dict) -> dict:
 
     # REPLY SECTION ----------------------------------------------------------------------
 
-    # TODO: IMPLEMENT
     repliedToTweetId = None
     repliedToUserId = None
     repliedToTweetDate = None
@@ -178,6 +191,17 @@ def extractTweet(data: dict) -> dict:
 
         # Remove Extra Comma
         expandedUrls = expandedUrls[:-2]
+
+    # FULL TWEET TEXT SECTION ----------------------------------------------------------------------
+
+    # TODO: Implement Full Tweet Text Finding/Storage
+    # if 'tweets' in metadata:
+    #     text = ""  # Set to Blank String
+
+    #     # Loop Through Referenced Tweets
+    #     for tweet in tweet['tweets']:
+    #         text = tweet['text']
+    #         break
 
     # FORM DICTIONARY SECTION ----------------------------------------------------------------------
 

@@ -1,0 +1,162 @@
+{
+  "data": {
+    "source": "Twitter for iPhone",
+    "text": "RT @WaysandMeansGOP: #USMCA will build on the strong economy, benefitting farmers, small businesses, and manufacturers across the country.…",
+    "entities": {
+      "mentions": [
+        {
+          "start": 3,
+          "end": 19,
+          "username": "WaysandMeansGOP"
+        }
+      ],
+      "hashtags": [
+        {
+          "start": 21,
+          "end": 27,
+          "tag": "USMCA"
+        }
+      ]
+    },
+    "public_metrics": {
+      "retweet_count": 3642,
+      "reply_count": 0,
+      "like_count": 0,
+      "quote_count": 0
+    },
+    "possibly_sensitive": false,
+    "created_at": "2019-10-11T15:38:29.000Z",
+    "lang": "en",
+    "referenced_tweets": [
+      {
+        "type": "retweeted",
+        "id": "1182360766172815367"
+      }
+    ],
+    "id": "1182681884628791297",
+    "author_id": "25073877",
+    "conversation_id": "1182681884628791297"
+  },
+  "includes": {
+    "users": [
+      {
+        "public_metrics": {
+          "followers_count": 88941425,
+          "following_count": 51,
+          "tweet_count": 58533,
+          "listed_count": 125071
+        },
+        "verified": true,
+        "name": "Donald J. Trump",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8f9VFxztEJ",
+                "expanded_url": "http://Vote.DonaldJTrump.com",
+                "display_url": "Vote.DonaldJTrump.com"
+              }
+            ]
+          }
+        },
+        "url": "https://t.co/8f9VFxztEJ",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+        "username": "realDonaldTrump",
+        "protected": false,
+        "description": "45th President of the United States of America🇺🇸",
+        "created_at": "2009-03-18T13:46:38.000Z",
+        "location": "Washington, DC",
+        "id": "25073877"
+      },
+      {
+        "public_metrics": {
+          "followers_count": 47276,
+          "following_count": 630,
+          "tweet_count": 14716,
+          "listed_count": 1294
+        },
+        "verified": true,
+        "name": "Ways and Means GOP",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/RORoP6Sbor",
+                "expanded_url": "http://gop-waysandmeans.house.gov",
+                "display_url": "gop-waysandmeans.house.gov"
+              }
+            ]
+          },
+          "description": {
+            "mentions": [
+              {
+                "start": 143,
+                "end": 157,
+                "username": "RepKevinBrady"
+              }
+            ]
+          }
+        },
+        "url": "https://t.co/RORoP6Sbor",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1042836487300149249/APsv5hxG_normal.jpg",
+        "username": "WaysandMeansGOP",
+        "protected": false,
+        "description": "Official account of the Senior Committee, with jurisdiction over tax, trade, health care, welfare, and Social Security. ||  Republican Leader, @RepKevinBrady.",
+        "created_at": "2008-01-28T15:30:34.000Z",
+        "location": "Washington, D.C.",
+        "pinned_tweet_id": "1239941127010168832",
+        "id": "12788332"
+      }
+    ],
+    "tweets": [
+      {
+        "source": "Twitter Web App",
+        "text": "#USMCA will build on the strong economy, benefitting farmers, small businesses, and manufacturers across the country. It’s time for #USMCANow. https://t.co/xTiloQMnhD",
+        "public_metrics": {
+          "retweet_count": 3642,
+          "reply_count": 481,
+          "like_count": 13042,
+          "quote_count": 122
+        },
+        "possibly_sensitive": false,
+        "entities": {
+          "urls": [
+            {
+              "start": 143,
+              "end": 166,
+              "url": "https://t.co/xTiloQMnhD",
+              "expanded_url": "https://twitter.com/WaysandMeansGOP/status/1182360766172815367/photo/1",
+              "display_url": "pic.twitter.com/xTiloQMnhD"
+            }
+          ],
+          "hashtags": [
+            {
+              "start": 0,
+              "end": 6,
+              "tag": "USMCA"
+            },
+            {
+              "start": 132,
+              "end": 141,
+              "tag": "USMCANow"
+            }
+          ]
+        },
+        "created_at": "2019-10-10T18:22:28.000Z",
+        "attachments": {
+          "media_keys": [
+            "3_1182360763069059072"
+          ]
+        },
+        "lang": "en",
+        "id": "1182360766172815367",
+        "author_id": "12788332",
+        "conversation_id": "1182360766172815367"
+      }
+    ]
+  }
+}
