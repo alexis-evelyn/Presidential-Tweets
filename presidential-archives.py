@@ -1,47 +1,68 @@
+#!/usr/bin/python
+
 from doltpy.core import Dolt
 from doltpy.etl import get_df_table_writer
 from doltpy.core.system_helpers import get_logger
 # from doltpy.core.write import bulk_import
 
+import sys
 import pandas as pd
 import json
 
 # Dolt Logger
 logger = get_logger(__name__)
 
-def main():
+
+def main(args: list):
+    print(str(args))
+
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'tests'
-    table = 'test'
-    url = 'dolthub/great-players-example'
-    message = 'Test Commit'
-    
+    table = 'trump'
+    url = 'alexis-evelyn/presidential-tweets'
+    message = 'Automated Tweet Update'
+
     # Defaults
     createRepo = False
     branch = 'master'
-    
+
     data = retrieveData()
     tweet = extractTweet(data)
     df = getDataFrame(tweet)
     repo = initRepo(repoPath, createRepo)
-    
+
     writeData(repo, table, df, tweet)
-    
-    # commitData(table, message)
-    # pushData(url, branch)
-    
+
+    # commitData(repo, table, message)
+    # pushData(repo, url, branch)
+
     # Dolthub Employees - Uncomment to See Debug JSON Output
     # print(json.dumps(tweet, indent = 4))
+
+    # Debug DataFrame
+    # debugDataFrame(df)
+
+
+def debugDataFrame(dataFrame: pd.DataFrame):
+    # Setup Print Options
+    pd.set_option('display.max_colwidth', None)
+    pd.set_option('max_columns', None)
+
+    # Print DataFrame Info
+    print("DataFrame: ")
+    print(dataFrame.head())
+
 
 def retrieveData() -> dict:
     # Read JSON From File
     with open('tests/regular-test.json') as f:
-      data = json.load(f)
-    
+        data = json.load(f)
+
     # Print JSON For Debugging
     # print(data)
-    
+
     return data
+
 
 def extractTweet(data: dict) -> dict:
     # Extract Tweet Info
@@ -50,13 +71,13 @@ def extractTweet(data: dict) -> dict:
 
     # Detect if Retweet
     isRetweet = False
-    retweetedTweetId = None;
-    iteration = -1;
+    retweetedTweetId = None
+    iteration = -1
 
     # If Has Referenced Tweets Key
     if 'referenced_tweets' in tweet:
         for refTweets in tweet['referenced_tweets']:
-            iteration = iteration + 1;
+            iteration = iteration + 1
 
             if refTweets['type'] == 'retweeted':
                 isRetweet = True
@@ -64,8 +85,8 @@ def extractTweet(data: dict) -> dict:
                 break
 
     # Get Retweeted User's ID and Tweet Date
-    retweetedUserId = None;
-    retweetedTweetDate = None;
+    retweetedUserId = None
+    retweetedTweetDate = None
 
     # Pull From Same Iteration
     if 'tweets' in metadata and iteration < len(metadata['tweets']):
@@ -82,7 +103,7 @@ def extractTweet(data: dict) -> dict:
 
     retweetedTweetDate = None
     expandedUrls = None
-    
+
     return {
         'id': tweet['id'],
 
@@ -99,7 +120,7 @@ def extractTweet(data: dict) -> dict:
 
         # This Tweet's Booleans
         'isRetweet': int(isRetweet),
-        'isDeleted': 0, # Currently hardcoded
+        'isDeleted': 0,  # Currently hardcoded
 
         # Replied Tweet Info
         'repliedToTweetId': repliedToTweetId,
@@ -117,17 +138,20 @@ def extractTweet(data: dict) -> dict:
         # Raw Json For Future Processing
         'json': data
     }
-    
+
+
 def getDataFrame(tweet: dict) -> pd.DataFrame:
     # Import JSON Into Panda DataFrame
     return pd.DataFrame([tweet])
+
 
 def initRepo(path: str, create: bool) -> Dolt:
     # Prepare Repo For Data
     if create:
         return Dolt.init(path)
-    
+
     return Dolt(path)
+
 
 def writeData(repo: Dolt, table: str, dataFrame: pd.DataFrame, data: dict):
     # Prepare Data Writer
@@ -136,13 +160,16 @@ def writeData(repo: Dolt, table: str, dataFrame: pd.DataFrame, data: dict):
     # Write Data To Repo
     raw_data_writer(repo)
 
-def commitData(table: str, message: str):
+
+def commitData(repo: Dolt, table: str, message: str):
     repo.add(table)
     repo.commit(message)
-    
-def pushData(url: str, branch: str):
+
+
+def pushData(repo: Dolt, url: str, branch: str):
     repo.remote(add=True, name='origin', url=url)
     repo.push('origin', branch)
-    
+
+
 if __name__ == '__main__':
-    main()
+    main(sys.argv)

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="CheckStyle-IDEA-Module">
+    <option name="configuration">
+      <map />
+    </option>
+  </component>
+  <component name="FacetManager">
+    <facet type="Python" name="Python">
+      <configuration sdkName="Python 3.8" />
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/presidential-tweets" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/.dolt" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/_distutils_hack" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip-20.2.4.dist-info" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_internal/index" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_internal/network" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_internal/operations/build" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_internal/operations/install" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_internal/resolution" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_vendor/resolvelib" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/pip/_vendor/toml" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/setuptools-50.3.2.dist-info" />
+      <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/setuptools/_distutils" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.8 (presidential-archiver)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
