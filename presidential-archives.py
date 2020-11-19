@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import sys
+import argparse
 import pandas as pd
 import json
 import logging
@@ -9,19 +9,30 @@ from doltpy.core import Dolt, system_helpers
 from doltpy.etl import get_df_table_writer
 from doltpy.core.system_helpers import get_logger
 
+# Custom Log Levels
+VERBOSE = logging.DEBUG - 1
+logging.addLevelName(VERBOSE, "VERBOSE")
+
 # Dolt Logger
 logger = get_logger(__name__)
-log_level = logging.WARN  # Set to Info To Set Useful Info, Set to Debug To See Everything
+
+# Argument Parser Setup
+parser = argparse.ArgumentParser(description='Arguments For Presidential Tweet Archiver')
+parser.add_argument("-log", "--log", help="Set Log Level (Defaults to WARNING)",
+                    dest='logLevel',
+                    default='WARNING',
+                    type=str.upper,
+                    choices=['VERBOSE', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
 
-def main(args: list):
+def main(arguments: argparse.Namespace):
     # Set Logging Level
-    logging.Logger.setLevel(system_helpers.logger, log_level)  # DoltPy's Log Level
-    logger.setLevel(log_level)  # This Script's Log Level
+    logging.Logger.setLevel(system_helpers.logger, arguments.logLevel)  # DoltPy's Log Level
+    logger.setLevel(arguments.logLevel)  # This Script's Log Level
 
     # Print Command Line Arguments
-    logger.debug("Command Line Arguments: ")
-    logger.debug(str(args))
+    logger.log(VERBOSE, "Command Line Arguments: ")
+    logger.log(VERBOSE, str(arguments))
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'tests'
@@ -44,7 +55,7 @@ def main(args: list):
     # pushData(repo, url, branch)
 
     # Dolthub Employees - Uncomment to See Debug JSON Output
-    logger.debug(json.dumps(tweet, indent=4))
+    logger.log(VERBOSE, json.dumps(tweet, indent=4))
 
     # Debug DataFrame
     # debugDataFrame(df)
@@ -56,8 +67,8 @@ def debugDataFrame(dataFrame: pd.DataFrame):
     pd.set_option('max_columns', None)
 
     # Print DataFrame Info
-    logger.debug("DataFrame: ")
-    logger.debug(dataFrame.head())
+    logger.log(VERBOSE, "DataFrame: ")
+    logger.log(VERBOSE, dataFrame.head())
 
 
 def retrieveData() -> dict:
@@ -66,7 +77,7 @@ def retrieveData() -> dict:
         data = json.load(f)
 
     # Print JSON For Debugging
-    logger.debug(data)
+    logger.log(VERBOSE, data)
 
     return data
 
@@ -179,4 +190,8 @@ def pushData(repo: Dolt, url: str, branch: str):
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    # This is to get DoltPy's Logger To Shut Up When Running `this_script.py -h`
+    logging.Logger.setLevel(system_helpers.logger, logging.CRITICAL)
+
+    args = parser.parse_args()
+    main(args)
