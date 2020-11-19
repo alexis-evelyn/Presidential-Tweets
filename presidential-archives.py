@@ -36,7 +36,7 @@ def main(arguments: argparse.Namespace):
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'tests'
-    table = 'trump'
+    table = 'test'
     url = 'alexis-evelyn/test'  # 'alexis-evelyn/presidential-tweets'
     message = 'Automated Tweet Update'
 
@@ -54,7 +54,7 @@ def main(arguments: argparse.Namespace):
 
     # Don't Bother Pushing If Not Commit
     if madeCommit:
-        pushData(repo=repo, url=url, branch=branch)
+        pushData(repo=repo, branch=branch)
 
 
 def setupRepo(repoPath: str, createRepo: bool, table: str) -> Dolt:
@@ -89,7 +89,7 @@ def debugDataFrame(dataFrame: pd.DataFrame):
 
 def retrieveData() -> dict:
     # Read JSON From File
-    with open('tests/regular-test.json') as f:
+    with open('tests/embedded-link.json') as f:
         data = json.load(f)
 
     # Print JSON For Debugging
@@ -102,6 +102,8 @@ def extractTweet(data: dict) -> dict:
     # Extract Tweet Info
     tweet = data['data']
     metadata = data['includes']
+
+    # RETWEET SECTION ----------------------------------------------------------------------
 
     # Detect if Retweet
     isRetweet = False
@@ -123,20 +125,57 @@ def extractTweet(data: dict) -> dict:
     retweetedTweetDate = None
 
     # Pull From Same Iteration
-    if 'tweets' in metadata and iteration < len(metadata['tweets']):
+    if 'tweets' in metadata and isRetweet and iteration < len(metadata['tweets']):
         retweetedUserId = metadata['tweets'][iteration]['author_id']
         retweetedTweetDate = metadata['tweets'][iteration]['created_at']
 
-    logger.debug("User ID: " + "Not Set" if retweetedUserId is None else retweetedUserId)
-    logger.debug("Tweet Date: " + "Not Set" if retweetedTweetDate is None else retweetedTweetDate)
+    logger.debug("Retweeted User ID: " + ("Not Set" if retweetedUserId is None else retweetedUserId))
+    logger.debug("Retweeted Tweet ID: " + ("Not Set" if retweetedTweetId is None else retweetedTweetId))
+    logger.debug("Retweeted Tweet Date: " + ("Not Set" if retweetedTweetDate is None else retweetedTweetDate))
 
-    # Not Handled Columns
+    # REPLY SECTION ----------------------------------------------------------------------
+
+    # TODO: IMPLEMENT
     repliedToTweetId = None
     repliedToUserId = None
     repliedToTweetDate = None
+    isReplyTweet = False
+    iteration = -1
 
-    retweetedTweetDate = None
+    # If Has Referenced Tweets Key
+    if 'referenced_tweets' in tweet:
+        for refTweets in tweet['referenced_tweets']:
+            iteration = iteration + 1
+
+            if refTweets['type'] == 'replied_to':
+                isReplyTweet = True
+                repliedToTweetId = refTweets['id']
+                break
+
+    if 'tweets' in metadata and isReplyTweet and iteration < len(metadata['tweets']):
+        repliedToUserId = metadata['tweets'][iteration]['author_id']
+        repliedToTweetDate = metadata['tweets'][iteration]['created_at']
+
+    logger.debug("Replied To User ID: " + ("Not Set" if repliedToUserId is None else repliedToUserId))
+    logger.debug("Replied To Tweet ID: " + ("Not Set" if repliedToTweetId is None else repliedToTweetId))
+    logger.debug("Replied To Tweet Date: " + ("Not Set" if repliedToTweetDate is None else repliedToTweetDate))
+
+    # EXPANDED URLS SECTION ----------------------------------------------------------------------
+
+    # Look For Expanded URLs in Tweet
     expandedUrls = None
+
+    if 'entities' in tweet and 'urls' in tweet['entities']:
+        expandedUrls = ""  # Set to Blank String
+
+        # Loop Through Expanded URLs
+        for url in tweet['entities']['urls']:
+            expandedUrls = expandedUrls + url['expanded_url'] + ', '
+
+        # Remove Extra Comma
+        expandedUrls = expandedUrls[:-2]
+
+    # FORM DICTIONARY SECTION ----------------------------------------------------------------------
 
     return {
         'id': tweet['id'],
@@ -179,10 +218,12 @@ def getDataFrame(tweet: dict) -> pd.DataFrame:
     return pd.DataFrame([tweet])
 
 
-def initRepo(path: str, create: bool) -> Dolt:
+def initRepo(path: str, create: bool, url: str = None) -> Dolt:
     # Prepare Repo For Data
     if create:
-        return Dolt.init(path)
+        repo = Dolt.init(path)
+        repo.remote(add=True, name='origin', url=url)
+        return repo
 
     return Dolt(path)
 
@@ -238,8 +279,7 @@ def commitData(repo: Dolt, table: str, message: str) -> bool:
     return False
 
 
-def pushData(repo: Dolt, url: str, branch: str):
-    repo.remote(add=True, name='origin', url=url)
+def pushData(repo: Dolt, branch: str):
     repo.push('origin', branch)
 
 

@@ -1,0 +1,96 @@
+{
+  "data": {
+    "entities": {
+      "annotations": [
+        {
+          "start": 8,
+          "end": 21,
+          "probability": 0.742,
+          "type": "Place",
+          "normalized_text": "Georgia County"
+        },
+        {
+          "start": 68,
+          "end": 72,
+          "probability": 0.9874,
+          "type": "Person",
+          "normalized_text": "Trump"
+        }
+      ],
+      "urls": [
+        {
+          "start": 75,
+          "end": 98,
+          "url": "https://t.co/9OxCU2faBF",
+          "expanded_url": "https://www.dailywire.com/news/breaking-second-georgia-county-finds-thousands-more-votes-majority-are-for-trump",
+          "display_url": "dailywire.com/news/breaking-…",
+          "images": [
+            {
+              "url": "https://pbs.twimg.com/news_img/1328818284473540609/_wDSVGc9?format=jpg&name=orig",
+              "width": 1200,
+              "height": 800
+            },
+            {
+              "url": "https://pbs.twimg.com/news_img/1328818284473540609/_wDSVGc9?format=jpg&name=150x150",
+              "width": 150,
+              "height": 150
+            }
+          ],
+          "status": 200,
+          "title": "BREAKING: Second Georgia County Finds Thousands More Votes, Majority Are For Trump | The Daily Wire",
+          "description": "A second county in Georgia has found a memory card with thousands of votes that had not been uploaded into the system used in the state. The majority of",
+          "unwound_url": "https://www.dailywire.com/news/breaking-second-georgia-county-finds-thousands-more-votes-majority-are-for-trump"
+        }
+      ]
+    },
+    "lang": "en",
+    "source": "Twitter for iPhone",
+    "conversation_id": "1328866797681061888",
+    "possibly_sensitive": false,
+    "id": "1328866797681061888",
+    "created_at": "2020-11-18T01:05:08.000Z",
+    "public_metrics": {
+      "retweet_count": 39949,
+      "reply_count": 21440,
+      "like_count": 194695,
+      "quote_count": 4052
+    },
+    "author_id": "25073877",
+    "text": "“Second Georgia County Finds Thousands More Votes, Majority Are For Trump” https://t.co/9OxCU2faBF"
+  },
+  "includes": {
+    "users": [
+      {
+        "protected": false,
+        "created_at": "2009-03-18T13:46:38.000Z",
+        "username": "realDonaldTrump",
+        "entities": {
+          "url": {
+            "urls": [
+              {
+                "start": 0,
+                "end": 23,
+                "url": "https://t.co/8f9VFxztEJ",
+                "expanded_url": "http://Vote.DonaldJTrump.com",
+                "display_url": "Vote.DonaldJTrump.com"
+              }
+            ]
+          }
+        },
+        "public_metrics": {
+          "followers_count": 88941913,
+          "following_count": 51,
+          "tweet_count": 58533,
+          "listed_count": 125075
+        },
+        "name": "Donald J. Trump",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/874276197357596672/kUuht00m_normal.jpg",
+        "location": "Washington, DC",
+        "description": "45th President of the United States of America🇺🇸",
+        "verified": true,
+        "url": "https://t.co/8f9VFxztEJ",
+        "id": "25073877"
+      }
+    ]
+  }
+}
