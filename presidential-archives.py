@@ -47,9 +47,10 @@ def main(arguments: argparse.Namespace):
     data = retrieveData()
     tweet = extractTweet(data)
     df = getDataFrame(tweet)
-    repo = initRepo(repoPath, createRepo)
+    repo = initRepo(path=repoPath, create=createRepo)
 
-    writeData(repo, table, df, tweet)
+    createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
+    writeData(repo=repo, table=table, dataFrame=df, requiredKeys=['id'])
 
     # commitData(repo, table, message)
     # pushData(repo, url, branch)
@@ -171,12 +172,46 @@ def initRepo(path: str, create: bool) -> Dolt:
     return Dolt(path)
 
 
-def writeData(repo: Dolt, table: str, dataFrame: pd.DataFrame, data: dict):
+def writeData(repo: Dolt, table: str, dataFrame: pd.DataFrame, requiredKeys: list):
     # Prepare Data Writer
-    raw_data_writer = get_df_table_writer(table, lambda: dataFrame, list(data.keys()))
+    raw_data_writer = get_df_table_writer(table, lambda: dataFrame, requiredKeys)
 
     # Write Data To Repo
     raw_data_writer(repo)
+
+
+def createTableIfNotExists(repo: Dolt, table: str) -> str:
+    columns = '''
+        `id` bigint unsigned NOT NULL,
+        `date` datetime NOT NULL,
+        `text` longtext NOT NULL,
+        `device` longtext NOT NULL,
+        `favorites` bigint unsigned NOT NULL,
+        `retweets` bigint unsigned NOT NULL,
+        `quoteTweets` bigint unsigned,
+        `replies` bigint unsigned,
+        `isRetweet` tinyint NOT NULL,
+        `isDeleted` tinyint NOT NULL,
+        `repliedToTweetId` bigint unsigned,
+        `repliedToUserId` bigint unsigned,
+        `repliedToTweetDate` datetime,
+        `retweetedTweetId` bigint unsigned,
+        `retweetedUserId` bigint unsigned,
+        `retweetedTweetDate` datetime,
+        `expandedUrls` longtext,
+        `json` longtext,
+        PRIMARY KEY (`id`)
+    '''
+
+    settings = '''
+        ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    '''
+
+    create_table = '''
+        CREATE TABLE IF NOT EXISTS {table} ({columns}) {settings}
+    '''.format(table=table, columns=columns, settings=settings)
+
+    return repo.sql(create_table, result_format='csv')
 
 
 def commitData(repo: Dolt, table: str, message: str):
