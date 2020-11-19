@@ -37,26 +37,41 @@ def main(arguments: argparse.Namespace):
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'tests'
     table = 'trump'
-    url = 'alexis-evelyn/presidential-tweets'
+    url = 'alexis-evelyn/test'  # 'alexis-evelyn/presidential-tweets'
     message = 'Automated Tweet Update'
 
     # Defaults
-    createRepo = False
     branch = 'master'
 
+    # Setup Repo
+    repo = setupRepo(repoPath=repoPath, createRepo=False, table=table)
+
+    # TODO: Move Me To Loop Function For Looping Through Tweets - Add Tweet To Database
+    addTweetToDatabase(repo=repo, table=table)
+
+    # Commit Changes If Any
+    madeCommit = commitData(repo=repo, table=table, message=message)
+
+    # Don't Bother Pushing If Not Commit
+    if madeCommit:
+        pushData(repo=repo, url=url, branch=branch)
+
+
+def setupRepo(repoPath: str, createRepo: bool, table: str) -> Dolt:
+    repo = initRepo(path=repoPath, create=createRepo)
+    createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
+    return repo
+
+
+def addTweetToDatabase(repo: Dolt, table: str):
     data = retrieveData()
     tweet = extractTweet(data)
     df = getDataFrame(tweet)
-    repo = initRepo(path=repoPath, create=createRepo)
 
-    createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
-    writeData(repo=repo, table=table, dataFrame=df, requiredKeys=['id'])
-
-    # commitData(repo, table, message)
-    # pushData(repo, url, branch)
-
-    # Dolthub Employees - Uncomment to See Debug JSON Output
+    # Use `python3 this-script.py --log=VERBOSE` in order to see this output
     logger.log(VERBOSE, json.dumps(tweet, indent=4))
+
+    writeData(repo=repo, table=table, dataFrame=df, requiredKeys=['id'])
 
     # Debug DataFrame
     # debugDataFrame(df)
@@ -214,9 +229,13 @@ def createTableIfNotExists(repo: Dolt, table: str) -> str:
     return repo.sql(create_table, result_format='csv')
 
 
-def commitData(repo: Dolt, table: str, message: str):
-    repo.add(table)
-    repo.commit(message)
+def commitData(repo: Dolt, table: str, message: str) -> bool:
+    # Check to ensure changes need to be added first
+    if not repo.status().is_clean:
+        repo.add(table)
+        repo.commit(message)
+        return True
+    return False
 
 
 def pushData(repo: Dolt, url: str, branch: str):
