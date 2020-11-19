@@ -44,7 +44,7 @@ def main(arguments: argparse.Namespace):
     branch = 'master'
 
     # Setup Repo
-    repo = setupRepo(repoPath=repoPath, createRepo=False, table=table)
+    repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # TODO: Move Me To Loop Function For Looping Through Tweets - Add Tweet To Database
     addTweetToDatabase(repo=repo, table=table)
@@ -57,8 +57,8 @@ def main(arguments: argparse.Namespace):
         pushData(repo=repo, branch=branch)
 
 
-def setupRepo(repoPath: str, createRepo: bool, table: str) -> Dolt:
-    repo = initRepo(path=repoPath, create=createRepo)
+def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> Dolt:
+    repo = initRepo(path=repoPath, create=createRepo, url=url)
     createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
     return repo
 
