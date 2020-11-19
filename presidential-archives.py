@@ -39,7 +39,7 @@ def main(arguments: argparse.Namespace):
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'presidential-tweets'  # tests
-    table = 'obama'
+    table = 'trump'
     url = 'alexis-evelyn/presidential-tweets'  # 'alexis-evelyn/test'
     message = 'Automated Tweet Update'
 
@@ -57,7 +57,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # Download Tweets From File and Archive
-    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/obama-ids.csv')
+    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/trump-ids-exists.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
