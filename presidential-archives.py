@@ -8,6 +8,7 @@ import json
 import logging
 import csv
 import time
+import math
 
 from doltpy.core import Dolt, system_helpers
 from doltpy.etl import get_df_table_writer
@@ -99,7 +100,7 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
 
                     logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
                     logger.error(msg=rateLimitMessage)
-                    exit(123)
+                    exit(math.floor(timeLeft)+1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
                     break
 
                 # TODO: Add Ability To Record Missing Tweet JSON to Database

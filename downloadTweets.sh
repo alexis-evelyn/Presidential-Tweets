@@ -12,6 +12,13 @@ while true; do
   echo "Downloading New Tweets"
   python3 presidential-archives.py
 
-  echo "Waiting 16 Minutes"
-  sleep 16m
+  waitTime=$?
+
+  if [ "$waitTime" -lt 1 ]
+  then
+    waitTime=$((16*60))
+  fi
+
+  echo "Waiting $((waitTime/60)) Minutes"
+  sleep $waitTime
 done
