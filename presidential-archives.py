@@ -7,7 +7,7 @@ import pandas as pd
 import json
 import logging
 import csv
-from requests import Response
+import time
 
 from doltpy.core import Dolt, system_helpers
 from doltpy.etl import get_df_table_writer
@@ -84,13 +84,21 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
                 line_count += 1
 
                 resp = api.get_tweet(tweet_id=row[0])
+                headers = resp.headers
+                rateLimitResetTime = headers['x-rate-limit-reset']
 
                 # TODO: Check Rate Limit and Sleep (Gotta Reload Last Tweet After Rate Limit's Up)
                 # Unable To Parse JSON. Chances Are Rate Limit's Been Hit
                 try:
                     tweet = json.loads(resp.text)
                 except JSONDecodeError as e:
-                    logger.error(msg=e.msg)
+                    now = time.time()
+                    timeLeft = (float(rateLimitResetTime) - now)
+
+                    rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(rateLimitResetTime, timeLeft, timeLeft / 60)
+
+                    logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
+                    logger.error(msg=rateLimitMessage)
                     break
 
                 # TODO: Add Ability To Record Missing Tweet JSON to Database
