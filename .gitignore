@@ -16,3 +16,6 @@ tests/test.csv
 
 # Virtual Environment
 venv/
+
+# Python Cache
+__pycache__
