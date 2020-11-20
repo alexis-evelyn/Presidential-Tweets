@@ -13,12 +13,13 @@ while true; do
   python3 presidential-archives.py
 
   waitTime=$?
+  # echo "Debug: $waitTime"
 
   if [ "$waitTime" -lt 1 ]
   then
-    waitTime=$((16*60))
+    waitTime=16
   fi
 
-  echo "Waiting $((waitTime/60)) Minutes"
-  sleep $waitTime
+  echo "Waiting $waitTime Minutes"
+  sleep $((waitTime*60))
 done
