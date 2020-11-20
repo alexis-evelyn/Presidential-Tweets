@@ -6,6 +6,8 @@
 import requests
 import json
 
+from requests import Response
+
 
 class BearerAuth(requests.auth.AuthBase):
     def __init__(self, token: str):
@@ -20,7 +22,7 @@ class TweetDownloader:
     def __init__(self, auth: BearerAuth):
         self.auth = auth
 
-    def get_tweet(self, tweet_id: str) -> json:
+    def get_tweet(self, tweet_id: str) -> Response:
         params = {
             "tweet.fields": "id,text,attachments,author_id,conversation_id,created_at,entities,geo,in_reply_to_user_id,lang,possibly_sensitive,public_metrics,referenced_tweets,source,withheld",
             "expansions": "author_id,referenced_tweets.id,in_reply_to_user_id,attachments.media_keys,attachments.poll_ids,geo.place_id,entities.mentions.username,referenced_tweets.id.author_id",
@@ -32,5 +34,4 @@ class TweetDownloader:
 
         # 1183124665688055809 = id
         api_url = 'https://api.twitter.com/2/tweets/{}'.format(tweet_id)
-        response = requests.get(api_url, params=params, auth=self.auth)
-        return json.loads(response.text)
+        return requests.get(api_url, params=params, auth=self.auth)
