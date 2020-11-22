@@ -61,7 +61,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # Download Tweets From File and Archive
-    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/trump-ids-exists.csv')
+    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/trump-ids-deleted.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
@@ -103,11 +103,6 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
                     exit(math.floor(timeLeft / 60)+1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
                     break
 
-                # TODO: Add Ability To Record Missing Tweet JSON to Database
-                # Cannot Download Tweet Due To Missing - Just Skip For Now
-                if 'errors' in tweet and tweet['errors'][0]['parameter'] == 'id':
-                    continue
-
                 addTweetToDatabase(repo=repo, table=table, data=tweet)
 
                 # print(json.dumps(tweet, indent=4))
@@ -123,7 +118,14 @@ def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> D
 
 
 def addTweetToDatabase(repo: Dolt, table: str, data: dict):
-    tweet = extractTweet(data)
+    tweet = None
+
+    # TODO: Figure Out If Tweet Still Accessible Despite Some Error Messages
+    if 'errors' in data and data['errors'][0]['parameter'] == 'id':
+        tweet = archiveErrorMessage(data)
+    else:
+        tweet = extractTweet(data)
+
     df = getDataFrame(tweet)
 
     # Use `python3 this-script.py --log=VERBOSE` in order to see this output
@@ -154,6 +156,21 @@ def retrieveData(path: str) -> dict:
     logger.log(VERBOSE, data)
 
     return data
+
+
+def archiveErrorMessage(data: dict) -> dict:
+    # for error in data['errors']:
+
+    return {
+        # Tweet ID
+        'id': int(data['errors'][0]['value']),
+
+        # Mark As Deleted
+        'isDeleted': 1,  # Currently hardcoded
+
+        # Raw Json For Future Processing
+        'json': data
+    }
 
 
 def extractTweet(data: dict) -> dict:

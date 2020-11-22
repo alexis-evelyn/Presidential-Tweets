@@ -1,0 +1,13 @@
+{
+  "errors": [
+    {
+      "value": "1278166975039049728",
+      "parameter": "id",
+      "resource_type": "tweet",
+      "section": "data",
+      "title": "Authorization Error",
+      "detail": "Sorry, you are not authorized to see the Tweet with id: [1278166975039049728].",
+      "type": "https://api.twitter.com/2/problems/not-authorized-for-resource"
+    }
+  ]
+}
