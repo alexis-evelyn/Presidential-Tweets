@@ -61,7 +61,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # Download Tweets From File and Archive
-    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/trump-ids-deleted.csv')
+    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='existing_tweets/trump-ids.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
@@ -118,14 +118,24 @@ def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> D
 
 
 def addTweetToDatabase(repo: Dolt, table: str, data: dict):
-    tweet = None
-
     # TODO: Figure Out If Tweet Still Accessible Despite Some Error Messages
     if 'errors' in data and data['errors'][0]['parameter'] == 'id':
-        tweet = archiveErrorMessage(data)
-    else:
-        tweet = extractTweet(data)
+        errorMessage = archiveErrorMessage(data)
 
+        create_table = '''
+            UPDATE {table}
+            set
+                isDeleted={isDeleted},
+                json="{json}"
+            where
+                id={id}
+        '''.format(table=table, id=errorMessage['id'], isDeleted=errorMessage['isDeleted'], json=errorMessage['json'])
+
+        repo.sql(create_table, result_format='csv')
+        return
+
+    # Tweet Data
+    tweet = extractTweet(data)
     df = getDataFrame(tweet)
 
     # Use `python3 this-script.py --log=VERBOSE` in order to see this output
