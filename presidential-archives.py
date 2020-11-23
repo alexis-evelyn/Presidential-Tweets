@@ -74,6 +74,9 @@ def main(arguments: argparse.Namespace):
 
 
 def downloadNewTweets(repo: Dolt, table: str, api: TweetDownloader):
+    # TODO: Grab Current President Here
+
+    # TODO: Lookup ID Here (None if Empty Table)
     resp = api.lookup_tweets(user_id='25073877', since_id='1330487624402935808')
     tweets = json.loads(resp.text)
 
@@ -83,6 +86,14 @@ def downloadNewTweets(repo: Dolt, table: str, api: TweetDownloader):
         logger.warning("Tweet {}: {}".format(tweet['id'], tweet['text']))
 
     logger.warning("Tweet Count: {}".format(tweetCount))
+
+
+def lookupLatestArchivedTweet(repo: Dolt, table: str) -> str:
+    latest_tweet = '''
+        SELECT id FROM {table} ORDER BY date DESC LIMIT 1
+    '''.format(table=table)
+
+    return repo.sql(latest_tweet, result_format='csv')
 
 
 def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: str):
