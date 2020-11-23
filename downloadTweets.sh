@@ -10,14 +10,16 @@ while true; do
   # results=$(cd $repoFolder && dolt sql -q "select id from trump where json is null" -r csv > ../presidential-tweets/download-ids.csv)
 
   echo "Downloading New Tweets"
-  python3 presidential-archives.py
+  python3 presidential-archives.py --log=verbose
 
   waitTime=$?
   # echo "Debug: $waitTime"
 
-  if [ "$waitTime" -lt 2 ]
+  # Originally Less Than 2
+  if [ "$waitTime" -lt 1 ]
   then
-    waitTime=16
+    # Originally 16
+    waitTime=1
   fi
 
   echo "Waiting $waitTime Minutes"
