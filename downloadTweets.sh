@@ -6,8 +6,8 @@ source venv/bin/activate
 echo "Repo Folder: $repoFolder"
 
 while true; do
-  echo "Saving Current Tweets Left To CSV"
-  results=$(cd $repoFolder && dolt sql -q "select id from trump where json is null" -r csv > ../presidential-tweets/download-ids.csv)
+  # echo "Saving Current Tweets Left To CSV"
+  # results=$(cd $repoFolder && dolt sql -q "select id from trump where json is null" -r csv > ../presidential-tweets/download-ids.csv)
 
   echo "Downloading New Tweets"
   python3 presidential-archives.py
@@ -15,7 +15,7 @@ while true; do
   waitTime=$?
   # echo "Debug: $waitTime"
 
-  if [ "$waitTime" -lt 1 ]
+  if [ "$waitTime" -lt 2 ]
   then
     waitTime=16
   fi
