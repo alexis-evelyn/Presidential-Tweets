@@ -43,7 +43,6 @@ def main(arguments: argparse.Namespace):
 
     # Test Data (Will Be Replaced With Function Args For Handling Different Presidents)
     repoPath = 'presidential-tweets'  # tests
-    table = 'trump'
     url = 'alexis-evelyn/presidential-tweets'  # 'alexis-evelyn/test'
     message = 'Automated Tweet Update'
 
@@ -58,11 +57,25 @@ def main(arguments: argparse.Namespace):
     tAPI = TweetDownloader(auth=token)
 
     # Setup Repo
-    repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
+    repo = setupRepo(repoPath=repoPath, createRepo=False, url=url)
+
+    # Get Current President Info
+    president_info = lookupCurrentPresident(repo=repo)
+
+    # Sanitize For Empty Results
+    if len(president_info) < 1:
+        logger.error("President Info is Missing!!! Cannot Continue!!!")
+        exit(1)
+
+    president_id = president_info[0]['Twitter User ID']
+    table = president_info[0]['Database Name']
+
+    # Create Table If Not Exists
+    createTableIfNotExists(repo=repo, table=table)
 
     # Download Tweets From File and Archive
-    # downloadNewTweets(repo=repo, table=table, api=tAPI)  # TODO: Implement To Fully Automate Tweet Download
-    downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
+    downloadNewTweets(repo=repo, api=tAPI, president_id=president_id, table=table)
+    # downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
     # Commit Changes If Any
@@ -73,19 +86,79 @@ def main(arguments: argparse.Namespace):
         pushData(repo=repo, branch=branch)
 
 
-def downloadNewTweets(repo: Dolt, table: str, api: TweetDownloader):
-    # TODO: Grab Current President Here
+def lookupCurrentPresident(repo: Dolt) -> str:
+    current_time_query = '''
+        SELECT CURRENT_TIMESTAMP;
+    '''
 
-    # TODO: Lookup ID Here (None if Empty Table)
-    resp = api.lookup_tweets(user_id='25073877', since_id='1330487624402935808')
+    # I probably shouldn't be hardcoding the value of the query
+    current_time = repo.sql(current_time_query, result_format='csv')[0]['CURRENT_TIMESTAMP()']
+
+    logger.debug("Current SQL Time: {}".format(current_time))
+
+    current_president_query = '''
+        select `Twitter User ID`, `Database Name` from presidents where `Start Term`<'{current_date}' and (`End Term`>'{current_date}' or `End Term` is null) limit 1;
+    '''.format(current_date=current_time)
+
+    return repo.sql(current_president_query, result_format='csv')
+
+
+def lookupLatestTweet(repo: Dolt, table: str) -> str:
+    latest_tweet_id_query = '''
+        select id from {table} order by date desc limit 1;
+    '''.format(table=table)
+
+    tweet_id = repo.sql(latest_tweet_id_query, result_format='csv')  # 1330487624402935808
+
+    if len(tweet_id) < 1 or 'id' not in tweet_id[0]:
+        return None
+
+    return tweet_id[0]['id']
+
+
+def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownloader):
+    # Last Tweet ID
+    since_id = lookupLatestTweet(repo=repo, table=table)
+
+    # Sanitization
+    if since_id is None:
+        resp = api.lookup_tweets(user_id=president_id)
+    else:
+        resp = api.lookup_tweets(user_id=president_id, since_id=since_id)
+
     tweets = json.loads(resp.text)
 
     tweetCount = 0
     for tweet in tweets:
         tweetCount = tweetCount + 1
-        logger.warning("Tweet {}: {}".format(tweet['id'], tweet['text']))
+        logger.info("Tweet {}: {}".format(tweet['id'], tweet['text']))
 
-    logger.warning("Tweet Count: {}".format(tweetCount))
+        full_tweet = downloadTweet(api=api, tweet_id=tweet['id'])
+        addTweetToDatabase(repo=repo, table=table, data=full_tweet)
+
+    logger.info("Tweet Count: {}".format(tweetCount))
+
+
+def downloadTweet(api: TweetDownloader, tweet_id: str):
+    resp = api.get_tweet(tweet_id=tweet_id)
+    headers = resp.headers
+    rateLimitResetTime = headers['x-rate-limit-reset']
+
+    # TODO: Check Rate Limit and Sleep (Gotta Reload Last Tweet After Rate Limit's Up)
+    # Unable To Parse JSON. Chances Are Rate Limit's Been Hit
+    try:
+        return json.loads(resp.text)
+    except JSONDecodeError as e:
+        now = time.time()
+        timeLeft = (float(rateLimitResetTime) - now)
+
+        rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(
+            rateLimitResetTime, timeLeft, timeLeft / 60)
+
+        logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
+        logger.error(msg=rateLimitMessage)
+        exit(math.floor(
+            timeLeft / 60) + 1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
 
 
 def lookupLatestArchivedTweet(repo: Dolt, table: str) -> str:
@@ -108,26 +181,7 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
                 logger.log(VERBOSE, f'\t{row[0]}')
                 line_count += 1
 
-                resp = api.get_tweet(tweet_id=row[0])
-                headers = resp.headers
-                rateLimitResetTime = headers['x-rate-limit-reset']
-
-                # TODO: Check Rate Limit and Sleep (Gotta Reload Last Tweet After Rate Limit's Up)
-                # Unable To Parse JSON. Chances Are Rate Limit's Been Hit
-                try:
-                    tweet = json.loads(resp.text)
-                except JSONDecodeError as e:
-                    now = time.time()
-                    timeLeft = (float(rateLimitResetTime) - now)
-
-                    rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(
-                        rateLimitResetTime, timeLeft, timeLeft / 60)
-
-                    logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
-                    logger.error(msg=rateLimitMessage)
-                    exit(math.floor(
-                        timeLeft / 60) + 1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
-                    break
+                tweet = downloadTweet(api=api, tweet_id=row[0])
 
                 addTweetToDatabase(repo=repo, table=table, data=tweet)
 
@@ -137,9 +191,8 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
         logger.log(VERBOSE, f'Processed {line_count} lines.')
 
 
-def setupRepo(repoPath: str, createRepo: bool, table: str, url: str = None) -> Dolt:
+def setupRepo(repoPath: str, createRepo: bool, url: str = None) -> Dolt:
     repo = initRepo(path=repoPath, create=createRepo, url=url)
-    createTableIfNotExists(repo=repo, table=table)  # , dataFrame=df, keys=list(tweet.keys())
     return repo
 
 
