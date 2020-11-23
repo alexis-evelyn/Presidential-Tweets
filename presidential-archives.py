@@ -61,6 +61,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, table=table, url=url)
 
     # Download Tweets From File and Archive
+    # downloadNewTweets(repo=repo, table=table, api=tAPI)  # TODO: Implement To Fully Automate Tweet Download
     downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
     # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
@@ -70,6 +71,18 @@ def main(arguments: argparse.Namespace):
     # Don't Bother Pushing If Not Commit
     if madeCommit:
         pushData(repo=repo, branch=branch)
+
+
+def downloadNewTweets(repo: Dolt, table: str, api: TweetDownloader):
+    resp = api.lookup_tweets(user_id='25073877', since_id='1330487624402935808')
+    tweets = json.loads(resp.text)
+
+    tweetCount = 0
+    for tweet in tweets:
+        tweetCount = tweetCount + 1
+        logger.warning("Tweet {}: {}".format(tweet['id'], tweet['text']))
+
+    logger.warning("Tweet Count: {}".format(tweetCount))
 
 
 def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: str):
@@ -96,11 +109,13 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
                     now = time.time()
                     timeLeft = (float(rateLimitResetTime) - now)
 
-                    rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(rateLimitResetTime, timeLeft, timeLeft / 60)
+                    rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(
+                        rateLimitResetTime, timeLeft, timeLeft / 60)
 
                     logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
                     logger.error(msg=rateLimitMessage)
-                    exit(math.floor(timeLeft / 60)+1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
+                    exit(math.floor(
+                        timeLeft / 60) + 1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
                     break
 
                 addTweetToDatabase(repo=repo, table=table, data=tweet)
@@ -125,7 +140,7 @@ def addTweetToDatabase(repo: Dolt, table: str, data: dict):
         create_table = '''
             UPDATE {table}
             set
-                isDeleted={isDeleted},
+                isDeleted="{isDeleted}",
                 json="{json}"
             where
                 id={id}

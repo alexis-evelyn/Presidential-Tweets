@@ -35,3 +35,27 @@ class TweetDownloader:
         # 1183124665688055809 = id
         api_url = 'https://api.twitter.com/2/tweets/{}'.format(tweet_id)
         return requests.get(api_url, params=params, auth=self.auth)
+
+    def lookup_tweets(self, user_id: str = None, screen_name=None, since_id: str = None) -> Response:
+        params = {
+            "include_rts": "true",
+            "exclude_replies": "false"
+        }
+
+        if since_id is not None:
+            params['since_id'] = since_id
+
+        person = False
+        if user_id is not None:
+            params['user_id'] = user_id
+            person = True
+
+        if screen_name is not None and not person:
+            params['screen_name'] = screen_name
+            person = True
+
+        if not person:
+            raise ValueError('You need to set either a user_id or screen_name. Not both, not neither')
+
+        api_url = 'https://api.twitter.com/1.1/statuses/user_timeline.json'
+        return requests.get(api_url, params=params, auth=self.auth)
