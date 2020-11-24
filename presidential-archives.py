@@ -105,7 +105,7 @@ def lookupCurrentPresident(repo: Dolt) -> str:
 
 def lookupLatestTweet(repo: Dolt, table: str) -> str:
     latest_tweet_id_query = '''
-        select id from {table} order by date desc limit 1;
+        select id from {table} order by id desc limit 1;
     '''.format(table=table)
 
     tweet_id = repo.sql(latest_tweet_id_query, result_format='csv')  # 1330487624402935808
