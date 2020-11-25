@@ -109,6 +109,7 @@ def lookupLatestTweet(repo: Dolt, table: str) -> str:
     '''.format(table=table)
 
     tweet_id = repo.sql(latest_tweet_id_query, result_format='csv')  # 1330487624402935808
+    # tweet_id = "1331393812728573952"
 
     if len(tweet_id) < 1 or 'id' not in tweet_id[0]:
         return None
