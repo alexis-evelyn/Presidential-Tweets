@@ -6,6 +6,16 @@ To update the pointer file, run the bash script [./updatePointer.sh][update-poin
 
 On OSX, you may need to install the Python3 requirements yourself instead of letting your IDE do it. The command for that is `ARCHFLAGS="-arch x86_64" pip3 install -r ../requirements.txt`.
 
+Raspberry Pi support does not exist because Dolt segfaults on it, however, to get numpy to work, install `sudo apt-get install libatlas-base-dev`. Also, you will need to create `credentials.json` at the root of the project in the format as described below.
+
+### Credentials File
+
+```json
+{
+  "BEARER_TOKEN": "YOUR-TWITTER-APP-BEARER-TOKEN-HERE"
+}
+```
+
 ## President Table
 ```sql
 CREATE TABLE `your-president` (
