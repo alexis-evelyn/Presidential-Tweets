@@ -10,7 +10,7 @@ while true; do
   # results=$(cd $repoFolder && dolt sql -q "select id from trump where json is null" -r csv > ../presidential-tweets/download-ids.csv)
 
   echo "Downloading New Tweets"
-  python3 presidential-archives.py --log=verbose
+  python3 main.py --log=verbose
 
   waitTime=$?
   # echo "Debug: $waitTime"
