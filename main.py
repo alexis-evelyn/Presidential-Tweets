@@ -384,7 +384,7 @@ def extractTweet(data: dict) -> dict:
         'expandedUrls': expandedUrls,
 
         # Raw Json For Future Processing
-        'json': data
+        'json': json.dumps(data)
     }
 
 

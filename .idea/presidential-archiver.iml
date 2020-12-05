@@ -28,7 +28,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/setuptools-50.3.2.dist-info" />
       <excludeFolder url="file://$MODULE_DIR$/venv/lib/python3.8/site-packages/setuptools/_distutils" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.8 (presidential-archiver)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Presidential Archiver - Python 3.8" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
