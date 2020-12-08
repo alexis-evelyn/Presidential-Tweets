@@ -4,7 +4,6 @@
 # So I'm Just Downloading The Tweets Myself
 
 import requests
-import json
 
 from requests import Response
 

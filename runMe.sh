@@ -14,4 +14,4 @@ echo "Repo Folder: $repoFolder"
 # echo "Saving Current Tweets Left To CSV"
 # results=$(cd $repoFolder && dolt sql -q "select id from trump where json is null" -r csv > ../presidential-tweets/download-ids.csv)
 
-python3 main.py --log=verbose
+python3 main.py

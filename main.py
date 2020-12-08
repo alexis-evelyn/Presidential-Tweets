@@ -21,16 +21,19 @@ from tweetdownloader import TweetDownloader, BearerAuth
 VERBOSE = logging.DEBUG - 1
 logging.addLevelName(VERBOSE, "VERBOSE")
 
+INFO_QUIET = logging.INFO + 1
+logging.addLevelName(INFO_QUIET, "INFO_QUIET")
+
 # Dolt Logger
 logger = get_logger(__name__)
 
 # Argument Parser Setup
 parser = argparse.ArgumentParser(description='Arguments For Presidential Tweet Archiver')
-parser.add_argument("-log", "--log", help="Set Log Level (Defaults to WARNING)",
+parser.add_argument("-log", "--log", help="Set Log Level (Defaults to INFO_QUIET)",
                     dest='logLevel',
-                    default='WARNING',
+                    default='INFO_QUIET',
                     type=str.upper,
-                    choices=['VERBOSE', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
+                    choices=['VERBOSE', 'DEBUG', 'INFO', 'INFO_QUIET', 'WARNING', 'ERROR', 'CRITICAL'])
 
 parser.add_argument("-wait", "--wait", help="Set Delay Before Checking For New Tweets In Minutes",
                     dest='wait',
@@ -66,7 +69,7 @@ def main(arguments: argparse.Namespace):
     repo = setupRepo(repoPath=repoPath, createRepo=False, url=url)
 
     while 1:
-        logger.info("Checking For New Tweets")
+        logger.log(INFO_QUIET, "Checking For New Tweets")
 
         # Get Current President Info
         president_info = lookupCurrentPresident(repo=repo)
@@ -89,7 +92,7 @@ def main(arguments: argparse.Namespace):
 
         if isinstance(wait_time, int):
             wait_unit: str = "Minute" if wait_time == 60 else "Minutes"  # Because I Keep Forgetting What This Is Called, It's Called A Ternary Operator
-            logger.info("Waiting For {time} {unit} Before Checking For New Tweets".format(time=wait_time/60, unit=wait_unit))
+            logger.log(INFO_QUIET, "Waiting For {time} {unit} Before Checking For New Tweets".format(time=wait_time/60, unit=wait_unit))
             time.sleep(wait_time)
         else:
             # Commit Changes If Any
@@ -146,7 +149,7 @@ def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownl
     tweetCount = 0
     for tweet in tweets:
         tweetCount = tweetCount + 1
-        logger.info("Tweet {}: {}".format(tweet['id'], tweet['text']))
+        logger.log(INFO_QUIET, "Tweet {}: {}".format(tweet['id'], tweet['text']))
 
         full_tweet = downloadTweet(api=api, tweet_id=tweet['id'])
 
@@ -156,7 +159,7 @@ def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownl
 
         addTweetToDatabase(repo=repo, table=table, data=full_tweet)
 
-    logger.info("Tweet Count: {}".format(tweetCount))
+    logger.log(INFO_QUIET, "Tweet Count: {}".format(tweetCount))
 
 
 def downloadTweet(api: TweetDownloader, tweet_id: str) -> Union[dict, int]:
