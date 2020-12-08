@@ -35,7 +35,7 @@ parser.add_argument("-log", "--log", help="Set Log Level (Defaults to INFO_QUIET
                     type=str.upper,
                     choices=['VERBOSE', 'DEBUG', 'INFO', 'INFO_QUIET', 'WARNING', 'ERROR', 'CRITICAL'])
 
-parser.add_argument("-wait", "--wait", help="Set Delay Before Checking For New Tweets In Minutes",
+parser.add_argument("-wait", "--wait", help="Set Delay Before Checking For New Tweets In Minutes (Only Applies To Not Hitting Rate Limit)",
                     dest='wait',
                     default=1,
                     type=int)
@@ -90,17 +90,19 @@ def main(arguments: argparse.Namespace):
         # wait_time = downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
         # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
-        if isinstance(wait_time, int):
-            wait_unit: str = "Minute" if wait_time == 60 else "Minutes"  # Because I Keep Forgetting What This Is Called, It's Called A Ternary Operator
-            logger.log(INFO_QUIET, "Waiting For {time} {unit} Before Checking For New Tweets".format(time=wait_time/60, unit=wait_unit))
-            time.sleep(wait_time)
-        else:
+        if not isinstance(wait_time, int):
             # Commit Changes If Any
             madeCommit = commitData(repo=repo, table=table, message=message)
 
             # Don't Bother Pushing If Not Commit
             if madeCommit:
                 pushData(repo=repo, branch=branch)
+
+        # Wait Regardless Of If Hit Limit Or Not
+        wait_time = (arguments.wait * 60) if not isinstance(wait_time, int) else wait_time
+        wait_unit: str = "Minute" if wait_time == 60 else "Minutes"  # Because I Keep Forgetting What This Is Called, It's Called A Ternary Operator
+        logger.log(INFO_QUIET, "Waiting For {time} {unit} Before Checking For New Tweets".format(time=wait_time/60, unit=wait_unit))
+        time.sleep(wait_time)
 
 
 def lookupCurrentPresident(repo: Dolt) -> dict:
