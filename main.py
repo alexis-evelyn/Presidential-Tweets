@@ -2,6 +2,7 @@
 
 import argparse
 from json import JSONDecodeError
+from typing import Union, Optional
 
 import pandas as pd
 import json
@@ -31,6 +32,11 @@ parser.add_argument("-log", "--log", help="Set Log Level (Defaults to WARNING)",
                     type=str.upper,
                     choices=['VERBOSE', 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'])
 
+parser.add_argument("-wait", "--wait", help="Set Delay Before Checking For New Tweets In Minutes",
+                    dest='wait',
+                    default=1,
+                    type=int)
+
 
 def main(arguments: argparse.Namespace):
     # Set Logging Level
@@ -59,34 +65,42 @@ def main(arguments: argparse.Namespace):
     # Setup Repo
     repo = setupRepo(repoPath=repoPath, createRepo=False, url=url)
 
-    # Get Current President Info
-    president_info = lookupCurrentPresident(repo=repo)
+    while 1:
+        logger.info("Checking For New Tweets")
 
-    # Sanitize For Empty Results
-    if len(president_info) < 1:
-        logger.error("President Info is Missing!!! Cannot Continue!!!")
-        exit(1)
+        # Get Current President Info
+        president_info = lookupCurrentPresident(repo=repo)
 
-    president_id = president_info[0]['Twitter User ID']
-    table = president_info[0]['Database Name']
+        # Sanitize For Empty Results
+        if len(president_info) < 1:
+            logger.error("President Info is Missing!!! Cannot Continue!!!")
+            exit(1)
 
-    # Create Table If Not Exists
-    createTableIfNotExists(repo=repo, table=table)
+        president_id = president_info[0]["Twitter User ID"]
+        table = president_info[0]["Database Name"]
 
-    # Download Tweets From File and Archive
-    downloadNewTweets(repo=repo, api=tAPI, president_id=president_id, table=table)
-    # downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
-    # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
+        # Create Table If Not Exists
+        createTableIfNotExists(repo=repo, table=table)
 
-    # Commit Changes If Any
-    madeCommit = commitData(repo=repo, table=table, message=message)
+        # Download Tweets From File and Archive
+        wait_time = downloadNewTweets(repo=repo, api=tAPI, president_id=president_id, table=table)
+        # wait_time = downloadTweetsFromFile(repo=repo, table=table, api=tAPI, path='presidential-tweets/download-ids.csv')
+        # addTweetToDatabase(repo=repo, table=table, data=retrieveData('tests/cut-off-tweet.json'))
 
-    # Don't Bother Pushing If Not Commit
-    if madeCommit:
-        pushData(repo=repo, branch=branch)
+        if isinstance(wait_time, int):
+            wait_unit: str = "Minute" if wait_time == 60 else "Minutes"  # Because I Keep Forgetting What This Is Called, It's Called A Ternary Operator
+            logger.info("Waiting For {time} {unit} Before Checking For New Tweets".format(time=wait_time/60, unit=wait_unit))
+            time.sleep(wait_time)
+        else:
+            # Commit Changes If Any
+            madeCommit = commitData(repo=repo, table=table, message=message)
+
+            # Don't Bother Pushing If Not Commit
+            if madeCommit:
+                pushData(repo=repo, branch=branch)
 
 
-def lookupCurrentPresident(repo: Dolt) -> str:
+def lookupCurrentPresident(repo: Dolt) -> dict:
     current_time_query = '''
         SELECT CURRENT_TIMESTAMP;
     '''
@@ -117,7 +131,7 @@ def lookupLatestTweet(repo: Dolt, table: str) -> str:
     return tweet_id[0]['id']
 
 
-def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownloader):
+def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownloader) -> Optional[int]:
     # Last Tweet ID
     since_id = lookupLatestTweet(repo=repo, table=table)
 
@@ -135,12 +149,17 @@ def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownl
         logger.info("Tweet {}: {}".format(tweet['id'], tweet['text']))
 
         full_tweet = downloadTweet(api=api, tweet_id=tweet['id'])
+
+        # If Not A Tweet and Instead, The Rate Limit, Just Return
+        if isinstance(full_tweet, int):
+            return full_tweet
+
         addTweetToDatabase(repo=repo, table=table, data=full_tweet)
 
     logger.info("Tweet Count: {}".format(tweetCount))
 
 
-def downloadTweet(api: TweetDownloader, tweet_id: str):
+def downloadTweet(api: TweetDownloader, tweet_id: str) -> Union[json, int]:
     resp = api.get_tweet(tweet_id=tweet_id)
     headers = resp.headers
     rateLimitResetTime = headers['x-rate-limit-reset']
@@ -149,17 +168,19 @@ def downloadTweet(api: TweetDownloader, tweet_id: str):
     # Unable To Parse JSON. Chances Are Rate Limit's Been Hit
     try:
         return json.loads(resp.text)
-    except JSONDecodeError as e:
+    except JSONDecodeError:
         now = time.time()
         timeLeft = (float(rateLimitResetTime) - now)
 
         rateLimitMessage = 'Rate Limit Reset Time At {} which is in {} seconds ({} minutes)'.format(
             rateLimitResetTime, timeLeft, timeLeft / 60)
 
-        logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit. Wait 15 Minutes')
+        wait_time: int = math.floor(timeLeft)
+
+        logger.error(msg='Received A Non-JSON Value. Probably Hit Rate Limit.'.format(wait_time))
         logger.error(msg=rateLimitMessage)
-        exit(math.floor(
-            timeLeft / 60) + 1)  # So I Can Lazily Set Arbitrary Times Based On Twitter API Rate Limit With Bash
+
+        return wait_time
 
 
 def lookupLatestArchivedTweet(repo: Dolt, table: str) -> str:
@@ -170,7 +191,7 @@ def lookupLatestArchivedTweet(repo: Dolt, table: str) -> str:
     return repo.sql(latest_tweet, result_format='csv')
 
 
-def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: str):
+def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: str) -> Optional[int]:
     with open(path, "r") as file:
         csv_reader = csv.reader(file, delimiter=',')
         line_count = -1
@@ -183,6 +204,10 @@ def downloadTweetsFromFile(repo: Dolt, table: str, api: TweetDownloader, path: s
                 line_count += 1
 
                 tweet = downloadTweet(api=api, tweet_id=row[0])
+
+                # If Not A Tweet and Instead, The Rate Limit, Just Return
+                if isinstance(tweet, int):
+                    return tweet
 
                 addTweetToDatabase(repo=repo, table=table, data=tweet)
 

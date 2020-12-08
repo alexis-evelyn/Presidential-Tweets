@@ -1,7 +1,12 @@
 #!/bin/bash
 
 repoFolder="presidential-tweets"
-source venv/bin/activate
+
+if [ -f "./venv/bin/activate" ]
+then
+    echo "Using Venv ./venv/"
+    source ./venv/bin/activate
+fi
 
 echo "Repo Folder: $repoFolder"
 
