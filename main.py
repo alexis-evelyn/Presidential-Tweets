@@ -159,7 +159,7 @@ def downloadNewTweets(repo: Dolt, table: str, president_id: str, api: TweetDownl
     logger.info("Tweet Count: {}".format(tweetCount))
 
 
-def downloadTweet(api: TweetDownloader, tweet_id: str) -> Union[json, int]:
+def downloadTweet(api: TweetDownloader, tweet_id: str) -> Union[dict, int]:
     resp = api.get_tweet(tweet_id=tweet_id)
     headers = resp.headers
     rateLimitResetTime = headers['x-rate-limit-reset']
